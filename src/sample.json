@@ -1,0 +1,104 @@
+{
+    "id": "sample",
+    "config": {
+        "run": {
+            "mode": "train",
+            "device": "gpu"
+        },
+        "transforms": "none",
+        "dataset": {
+            "class_name": "ISIC2018Dataset",
+            "training": {
+                "params": {
+                    "root_dir": "/home/staff/azad/deeplearning/datasets/ISIC2018",
+                    "img_folder": "ISIC2018_Task1-2_Training_Input",
+                    "msk_folder": "ISIC2018_Task1_Training_GroundTruth",
+                    "img_filename_format": "ISIC_*.jpg",
+                    "msk_filename_format": "ISIC_*_segmentation.png",
+                    "transform_list": [
+                        "Resize((128, 128))",
+                        "Normalize()"
+                    ]
+                }
+            },
+            "validation": {
+                "params": {
+                    "root_dir": "/home/staff/azad/deeplearning/datasets/ISIC2018",
+                    "img_folder": "ISIC2018_Task1-2_Validation_Input",
+                    "msk_folder": "ISIC2018_Task1_Validation_GroundTruth",
+                    "img_filename_format": "ISIC_*.jpg",
+                    "msk_filename_format": "ISIC_*_segmentation.png",
+                    "transform_list": [
+                        "Resize((128, 128))",
+                        "Normalize()"
+                    ]
+                }
+            },
+            "test": {
+                "params": {
+                    "root_dir": "/content/ISIC2018",
+                    "img_folder": "ISIC2018_Task1-2_Test_Input",
+                    "img_filename_format": "ISIC_*.jpg",
+                    "transform_list": [
+                        "Resize((128, 128))",
+                        "Normalize()"
+                    ]
+                }
+            },
+            "number_classes": 2
+        },
+        "data_loader": {
+            "train": {
+                "batch_size": 16,
+                "shuffle": true
+            },
+            "validation": {
+                "batch_size": 16,
+                "shuffle": false
+            },
+            "test": {
+                "batch_size": 16,
+                "shuffle": false
+            }
+        },
+        "training": {
+            "optimizer": {
+                "name": "Adam",
+                "params": {
+                    "lr": 0.0001
+                }
+            },
+            "criterion": {
+                "name": "DiceLoss",
+                "params": {}
+            },
+            "patience": 5,
+            "epochs": 50,
+            "progress_p": null
+        },
+        "model": {
+            "save_dir": "../saved_models/isic2018_unet",
+            "load_weights": true,
+            "name": "Unet",
+            "params": {
+                "in_channels": 3,
+                "out_channels": 1
+            }
+        }
+    },
+    "epochs_info": [
+        {
+            "tr_loss": 0.08496679247994172,
+            "vl_loss": 0.061284294920078114,
+            "metrics": {
+                "accuracy": 0.23896970246967517,
+                "sensitivity": 0.0,
+                "specificity": 0.0,
+                "precision": 0.0,
+                "f1": 0.0,
+                "js": 0.0,
+                "dc": 0.0
+            }
+        }
+    ]
+}

@@ -1,0 +1,79 @@
+run:
+  mode: 'train'
+  device: 'gpu'
+
+
+transforms: none
+
+dataset:
+  class_name: "ISIC2018Dataset"
+  training:
+    params:
+      root_dir: "/home/staff/azad/deeplearning/datasets/ISIC2018"
+      img_folder: "ISIC2018_Task1-2_Training_Input"
+      msk_folder: "ISIC2018_Task1_Training_GroundTruth"
+      img_filename_format: "ISIC_*.jpg"
+      msk_filename_format: "ISIC_*_segmentation.png"
+      transform_list:
+        - Resize((128, 128))
+        - Normalize()
+      
+  validation:
+    params:
+      root_dir: "/home/staff/azad/deeplearning/datasets/ISIC2018"
+      img_folder: "ISIC2018_Task1-2_Validation_Input"
+      msk_folder: "ISIC2018_Task1_Validation_GroundTruth"
+      img_filename_format: "ISIC_*.jpg"
+      msk_filename_format: "ISIC_*_segmentation.png"
+      transform_list:
+        - Resize((128, 128))
+        - Normalize()
+
+  test:
+    params:
+      root_dir: "/content/ISIC2018"
+      img_folder: "ISIC2018_Task1-2_Test_Input"
+      img_filename_format: "ISIC_*.jpg"
+      transform_list:
+        - Resize((128, 128))
+        - Normalize()
+      
+  number_classes: 2
+
+data_loader:
+  train: 
+    batch_size: 16
+    shuffle: true
+    # num_workers: 1
+  
+  validation: 
+    batch_size: 16
+    shuffle: false
+    # num_workers: 1
+
+  test:
+    batch_size: 16
+    shuffle: false
+    # num_workers: 1
+
+training:
+  optimizer:
+    name: 'Adam'
+    params:
+      lr: 0.0001
+  criterion:
+    name: "DiceLoss"
+    params: {}
+  patience: 5
+  epochs: 50
+  progress_p: 
+
+model:
+  save_dir: '../saved_models/brats2020_unet'
+  load_weights: true
+  name: 'Vnet'
+  params:
+    elu: true
+    nll: false
+
+# preprocess:

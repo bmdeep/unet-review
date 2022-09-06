@@ -1,0 +1,49 @@
+run:
+  mode: 'train'
+  device: 'gpu'
+transforms: none
+dataset:
+  class_name: "ISIC2018TrainingDataset"
+  input_size: 256
+  training:
+    params:
+      data_dir: "/home/staff/azad/deeplearning/datasets/ISIC2018"
+  validation:
+    params:
+      data_dir: "/home/staff/azad/deeplearning/datasets/ISIC2018"
+  number_classes: 2
+data_loader:
+  train: 
+    batch_size: 16
+    shuffle: true
+    num_workers: 4
+    pin_memory: true
+  validation: 
+    batch_size: 16
+    shuffle: false
+    num_workers: 4
+    pin_memory: true
+  test:
+    batch_size: 16
+    shuffle: false
+    num_workers: 4
+    pin_memory: false
+training:
+  optimizer:
+    name: 'Adam'
+    params:
+      lr: 0.0001
+  criterion:
+    name: "DiceLoss"
+    params: {}
+  patience: 5
+  epochs: 50
+model:
+  save_dir: '../saved_models/isic2018_unet'
+  load_weights: false
+  name: 'Unet'
+  params:
+    in_channels: 3
+    out_channels: 1
+    with_bn: false
+# preprocess:
